@@ -15,3 +15,5 @@ Route::get('/', function()
 {
 	return View::make('hello');
 });
+Latchet::connection('Connection');
+Latchet::topic('test-topic', 'TestTopic');

@@ -1,6 +1,13 @@
 {
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/sidneywidmer/latchet"
+		}
+	],
 	"require": {
-		"laravel/framework": "4.0.*"
+		"laravel/framework": "4.0.*",
+		"sidney/latchet": "dev-master"
 	},
 	"autoload": {
 		"classmap": [
