@@ -8,7 +8,7 @@ class User extends Ardent {
 	*/
 	public static $rules = array(
 		'session_id' => 'required|alpha_num',
-		'name' => 'alpha_dash',
+		'name' => 'alpha_dash|max:50|min:2',
 		'connected' => 'required|in:0,1'
 	);
 

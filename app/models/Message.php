@@ -7,7 +7,7 @@ class Message extends Ardent {
 	* Ardent validation rules
 	*/
 	public static $rules = array(
-		'content' => 'required',
+		'content' => 'required|max:500|min:1',
 	);
 
 	/**

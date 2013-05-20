@@ -3,50 +3,67 @@
 	<head>
 		<meta charset="utf-8">
 		<title>whatup.</title>
-		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<link rel="stylesheet" href="css/font-awesome.min.css">
 		<link rel="stylesheet" href="css/style.css">
+		<link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 	</head>
 	<body>
 
 		<!-- Default template which gets loaded when we hit / -->
 		<script type="text/x-handlebars" data-template-name="application">
-			<h2>Welcome to whatup</h2>
-			{{outlet}}
+				{{outlet}}
 		</script>
 
 
 		<script type="text/x-handlebars" data-template-name="room">
-			<p>Room: {{id}}</p>
-			<p>CurrentUser: {{currentUser.sessionid}} {{currentUser.name}}</p>
-			<p>Other Users:</p>
-			<ul>
-				{{#each users}}
-					<li>{{name}}</li>
-				{{/each}}
-			</ul>
-			{{#if currentUser.name}}
-				{{partial 'displayMessages'}}
-				{{partial 'submitMessage'}}
-			{{else}}
-				{{partial 'setUsername'}}
-			{{/if}}
+			<div class="intro">
+				<div class="intro-text">
+					<h1 class="color clouds">whatup <i class="icon-chevron-right color alizarin"></i> <span class="color midnight-blue">{{id}}</span></h1>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+			<div class="container">
+				{{#if currentUser.name}}
+					{{partial 'chat'}}
+				{{else}}
+					{{partial 'setUsername'}}
+				{{/if}}
+			</div>
 		</script>
 
 		<script type="text/x-handlebars" data-template-name="_setUsername">
-			<p>Choose username before participating:</p>
-			{{view Ember.TextField id="set-username" placeholder="Dr. Emmett Brown" valueBinding="currentUser.newName" action="setCurrentUserName"}}
-			<button {{action "setName" target="currentUser"}}>Join</button>
+			<div class="set-username">
+				<p>Mind telling us your name before participating?</p>
+				{{view Ember.TextField id="set-username" placeholder="Dr. Emmett Brown" valueBinding="currentUser.newName" action="setCurrentUserName"}}
+				<!--<button {{action "setName" target="currentUser"}} class="btn btn-large">Join</button>-->
+			</div>
 		</script>
 
-		<script type="text/x-handlebars" data-template-name="_displayMessages">
-			{{#each messages}}
-				<li>{{user.name}} : {{content}}</li>
-			{{/each}}
-		</script>
-
-		<script type="text/x-handlebars" data-template-name="_submitMessage">
-			{{view Ember.TextField id="new-message" placeholder="Type here..." valueBinding="newSubmitMessage" action="submitMessage"}}
-			<button {{action "submitMessage"}}>Senden</button>
+		<script type="text/x-handlebars" data-template-name="_chat">
+			<div class="chat">
+				<div class="messages">
+					<ul>
+					{{#each messages}}
+						<li>{{user.name}} : {{content}}</li>
+					{{/each}}
+					</ul>
+					<div class="new-message">
+						{{view Ember.TextField id="new-message" placeholder="Type here..." valueBinding="newSubmitMessage" action="submitMessage"}}
+						<button {{action "submitMessage"}} class="btn btn-large">Senden</button>
+					</div>
+				</div>
+				<div class="users">
+					<ul>
+						<li class="users-title">Subscribers:</li>
+					{{#each users}}
+						<li>{{name}}</li>
+					{{else}}
+						<li>Forever alone :(</li>
+					{{/each}}
+					</ul>
+				</div>
+			</div>
 		</script>
 
 		<script src="js/libs/jquery-1.9.1.js"></script>
