@@ -1,15 +1,13 @@
 <?php
 use LaravelBook\Ardent\Ardent;
 
-class User extends Ardent {
+class Message extends Ardent {
 
 	/**
 	* Ardent validation rules
 	*/
 	public static $rules = array(
-		'session_id' => 'required|alpha_num',
-		'name' => 'alpha_dash',
-		'connected' => 'required|in:0,1'
+		'content' => 'required',
 	);
 
 	/**
@@ -21,11 +19,11 @@ class User extends Ardent {
 	 }
 
 	/**
-	 * define relationship to messages
+	 * define relationship to user
 	 */
-	 public function messages()
+	 public function user()
 	 {
-	 	return $this->hasMany('message');
+	 	return $this->belongsTo('user');
 	 }
 
 }

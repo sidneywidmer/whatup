@@ -17,4 +17,4 @@ Route::get('/', function()
 });
 
 Latchet::connection('Connection');
-Latchet::topic('room/{roomid}', 'RoomTopic');
+Latchet::topic('room/{room_name}', 'RoomTopic');

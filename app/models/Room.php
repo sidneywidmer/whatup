@@ -1,26 +1,24 @@
 <?php
 use LaravelBook\Ardent\Ardent;
 
-class User extends Ardent {
+class Room extends Ardent {
 
 	/**
 	* Ardent validation rules
 	*/
 	public static $rules = array(
-		'session_id' => 'required|alpha_num',
-		'name' => 'alpha_dash',
-		'connected' => 'required|in:0,1'
+		'name' => 'required|alpha_num',
 	);
 
 	/**
-	 * define relationship to room
+	 * define relationship to users
 	 */
-	 public function room()
+	 public function users()
 	 {
-	 	return $this->belongsTo('room');
+	 	return $this->hasMany('user');
 	 }
 
-	/**
+	 /**
 	 * define relationship to messages
 	 */
 	 public function messages()

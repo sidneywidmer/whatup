@@ -16,11 +16,17 @@
 
 
 		<script type="text/x-handlebars" data-template-name="room">
-			<h4>{{id}}</h4>
-			<p>User: {{currentUser.id}} {{currentUser.name}}</p>
+			<p>Room: {{id}}</p>
+			<p>CurrentUser: {{currentUser.sessionid}} {{currentUser.name}}</p>
+			<p>Other Users:</p>
+			<ul>
+				{{#each users}}
+					<li>{{name}}</li>
+				{{/each}}
+			</ul>
 			{{#if currentUser.name}}
 				{{partial 'displayMessages'}}
-				{{partial 'newMessage'}}
+				{{partial 'submitMessage'}}
 			{{else}}
 				{{partial 'setUsername'}}
 			{{/if}}
@@ -32,17 +38,15 @@
 			<button {{action "setName" target="currentUser"}}>Join</button>
 		</script>
 
-		<script type="text/x-handlebars" data-template-name="_newMessage">
-			<form>
-				{{view Ember.TextField valueBinding="newMessageField"}}
-				<button class="btn" {{action newMessage newMessageField}}>Send</button>
-			</form>
-		</script>
-
 		<script type="text/x-handlebars" data-template-name="_displayMessages">
 			{{#each messages}}
-				<li>{{username}} : {{message}}
+				<li>{{user.name}} : {{content}}</li>
 			{{/each}}
+		</script>
+
+		<script type="text/x-handlebars" data-template-name="_submitMessage">
+			{{view Ember.TextField id="new-message" placeholder="Type here..." valueBinding="newSubmitMessage" action="submitMessage"}}
+			<button {{action "submitMessage"}}>Senden</button>
 		</script>
 
 		<script src="js/libs/jquery-1.9.1.js"></script>
