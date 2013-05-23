@@ -48,7 +48,7 @@ App.Router.map(function() {
 App.ApplicationRoute = Ember.Route.extend({
 	setupController: function(){
 		//set the current user
-		var newUser = App.User.create({id: App.socket._session_id});
+		var newUser = App.User.create({id: App.socket._session_id, connected: true});
 		this.controllerFor('CurrentUser').set("content", newUser);
 	}
 });
@@ -142,6 +142,7 @@ App.RoomController = Ember.ObjectController.extend({
 			currentRoom,
 			{'action':'submitMessage', 'value':message}
 		).then(function(result){
+			App.Debug(result);
 			if(result.success){
 				// push new message
 				var resultMessage = JSON.parse(result.message.message);
@@ -200,8 +201,14 @@ App.RoomController = Ember.ObjectController.extend({
 	},
 	removeUser: function(user){
 		var foundUser = this.get('content').get('users').findProperty('session_id', user.session_id);
+		foundUser.set('connected', false);
 		this.get('content').get('users').removeObject(foundUser);
 	}
+});
+
+// Handlebars Helpers
+Ember.Handlebars.registerBoundHelper('datehelper', function(value) {
+	return moment(value, "YYYY-MM-DD hh:mm:ss").calendar();
 });
 
 //Models
@@ -221,7 +228,8 @@ App.Room = Ember.Object.extend({
 
 App.User = Ember.Object.extend({
 	session_id: null, //session id of the socket connection
-	name: null
+	name: null,
+	connected: false,
 });
 
 App.Message = Ember.Object.extend({
