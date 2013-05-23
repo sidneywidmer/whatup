@@ -149,7 +149,7 @@ class RoomTopic extends BaseTopic {
 		}
 		else
 		{
-			return array('success' => false, 'errors' => $user->validationErrors->get('content'));
+			return array('success' => false, 'errors' => $newMessage->validationErrors->get('content'));
 		}
 	}
 
