@@ -19,7 +19,7 @@
 		<script type="text/x-handlebars" data-template-name="room">
 			<div class="intro">
 				<div class="intro-text">
-					<h1 class="color clouds">whatup <i class="icon-chevron-right color alizarin"></i> <span class="color midnight-blue">{{id}}</span></h1>
+					<h1 class="color clouds">whatup <i class="icon-chevron-right color nephritis"></i> <span class="color midnight-blue">{{id}}</span></h1>
 				</div>
 			</div>
 			<div class="clearfix"></div>
@@ -36,31 +36,45 @@
 			<div class="set-username">
 				<p>Mind telling us your name before participating?</p>
 				{{view Ember.TextField id="set-username" placeholder="Dr. Emmett Brown" valueBinding="currentUser.newName" action="setCurrentUserName"}}
-				<!--<button {{action "setName" target="currentUser"}} class="btn btn-large">Join</button>-->
+				<a {{action "setName" target="currentUser"}} class="btn"><i class="icon-ok"></i></a>
 			</div>
 		</script>
 
 		<script type="text/x-handlebars" data-template-name="_chat">
-			<div class="chat">
-				<div class="messages">
-					<ul>
-					{{#each messages}}
-						<li>{{user.name}} : {{content}}</li>
-					{{/each}}
-					</ul>
-					<div class="new-message">
+			<div class="chat row">
+				<div class="messages-wrap span9">
+					<div class="messages">
+						{{#each messages}}
+							<div class="message">
+								<div class="ball-big">
+									{{#if user.connected}}
+										<div class="ball bg nephritis"></div>
+									{{else}}
+										<div class="ball bg clouds"></div>
+									{{/if}}
+								</div>
+								<div class="user-message span2">
+									<span class="user-message-username">{{user.name}}: </span>
+									<span class="user-message-timestamp">{{datehelper timestamp}}</span>
+								</div>
+								<div class="content-message span6">
+								 	{{content}}
+								</div>
+							</div>
+						{{/each}}
+					</div>
+					<div class="new-message row">
 						{{view Ember.TextField id="new-message" placeholder="Type here..." valueBinding="newSubmitMessage" action="submitMessage"}}
-						<button {{action "submitMessage"}} class="btn btn-large">Senden</button>
+						<a {{action "submitMessage"}} class="btn"><i class="icon-ok"></i></a>
 					</div>
 				</div>
-				<div class="users">
+				<div class="users span3">
 					<ul>
 						<li class="users-title">Subscribers:</li>
-					{{#each users}}
-						<li>{{name}}</li>
-					{{else}}
-						<li>Forever alone :(</li>
-					{{/each}}
+						<li>You ({{currentUser.name}})</li>
+						{{#each users}}
+							<li>{{name}}</li>
+						{{/each}}
 					</ul>
 				</div>
 			</div>
@@ -69,6 +83,7 @@
 		<script src="js/libs/jquery-1.9.1.js"></script>
 		<script src="js/libs/handlebars-1.0.0-rc.3.js"></script>
 		<script src="js/libs/ember-1.0.0-rc.3.js"></script>
+		<script src="js/libs/moment.min.js"></script>
 		<script src="js/libs/web-socket-js/swfobject.js"></script>
 		<script src="js/libs/web-socket-js/web_socket.js"></script>
 		<script src="http://autobahn.s3.amazonaws.com/js/autobahn.min.js"></script>
