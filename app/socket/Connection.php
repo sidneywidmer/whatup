@@ -29,7 +29,7 @@ class Connection extends BaseConnection {
 	public function close($connection)
 	{
 		//maybe the close gets fired before we could create a new user model
-		if(isset($connection->WhatUp->user))
+		if(isset($connection->WhatUp))
 		{
 			$user = $connection->WhatUp->user;
 			$user->connected = 0;
