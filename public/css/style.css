@@ -38,6 +38,8 @@ body {
 	position: relative;
 }
 
+.messages {}
+
 .users {
 	float: right;
 	position: relative;
