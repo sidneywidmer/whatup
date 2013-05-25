@@ -10,6 +10,24 @@
 	</head>
 	<body>
 
+		 <script src="http://autobahn.s3.amazonaws.com/js/autobahn.min.js"></script>
+		 <script type="text/javascript">
+		 	window.connection = new ab.Session(
+				'ws://lampstack.dev:1111', // The host (our Ratchet WebSocket server) to connect to
+				function() {
+					// Once the connection has been established
+					console.log('Connected');
+				},
+				function() {
+					// When the connection is closed
+					window.router.notFound();
+				},
+				{
+					// Additional parameters, we're ignoring the WAMP sub-protocol for older browsers
+					'skipSubprotocolCheck': true
+				}
+			);
+		 </script>
 		<script data-main="js/main" src="js/vendor/require.js"></script>
 	</body>
 </html>

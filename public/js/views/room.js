@@ -19,7 +19,11 @@ define([
 
 		},
 		initialize: function () {
-			this.listenTo(this.model.currentUser(), 'change:name', this.nameChanged);
+			//this.listenTo(this.model.currentUser(), 'change', this.nameChanged);
+			this.listenTo(this.model.currentUser(),'sync', this.test());
+		},
+		test: function(){
+			console.log("asdöflkjasdf");
 		},
 		render: function () {
 			this.$el.html(this.template({roomName: this.model.get('name')}));

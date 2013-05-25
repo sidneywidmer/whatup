@@ -21,6 +21,9 @@ define([
 			var liHtml = '<li><span data-name="name"></span></li>';
 			var userManagerFactory = new Backbone.CollectionBinder.ElManagerFactory(liHtml, 'data-name');
 			this._userCollectionBinder = new Backbone.CollectionBinder(userManagerFactory);
+
+			//finally subscribe to our room socket
+			this.model.subscribe();
 		},
 		render: function () {
 			this.$el.html(this.template());

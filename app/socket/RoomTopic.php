@@ -61,11 +61,11 @@ class RoomTopic extends BaseTopic {
 
 	public function call($connection, $id, $topic, array $params)
 	{
-		echo "new call for the following action: " . $params['action'] . " | value: " . $params['value'] . "\n";
+		echo "new call for the following action: " . $params['action'] . " | model: " . $params['model'] . "\n";
 
 		switch ($params['action']) {
-			case 'setName':
-				$result = $this->setName($params['value'], $connection);
+			case 'updateUser':
+				$result = $this->updateUser($params['model'], $connection);
 				break;
 			case 'submitMessage':
 				$result = $this->newMessage($params['value'], $connection, $topic);
@@ -102,18 +102,18 @@ class RoomTopic extends BaseTopic {
 	}
 
 	/**
-	 * set new Username
+	 * update the current user
 	 *
 	 * @param string $name
 	 */
-	private function setName($newName, $connection)
+	private function updateUser($model, $connection)
 	{
 		$user = $connection->WhatUp->user;
-		$user->name = $newName;
+		$user->name = $model['name'];
 
 		if($user->save())
 		{
-			return array('success' => true, 'newName' => $user->name);
+			return array('success' => true, 'model' => $user->toJson());
 		}
 		else
 		{

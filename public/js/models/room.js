@@ -4,9 +4,8 @@ define([
 	'backbone',
 	'models/user',
 	'collections/users',
-	'autobahn',
 	'backbonerelational'
-], function (_, Backbone, UserModel, UsersCollection, ab) {
+], function (_, Backbone, UserModel, UsersCollection) {
 	'use strict';
 
 	var RoomModel = Backbone.RelationalModel.extend({
@@ -16,12 +15,26 @@ define([
 			relatedModel: UserModel,
 			reverseRelation: {
 				key: 'currentRoom',
-				includeInJSON: 'id'
+				includeInJSON: 'name'
 				// 'relatedModel' is automatically set to 'Zoo'; the 'relationType' to 'HasOne'.
 			}
 		}],
-		initialize: function(){
-
+		subscribe: function(){
+			var channel = 'room/' + this.get('name');
+			window.connection.subscribe(channel, function(channel, msg) {
+				switch (msg.action)
+				{
+					case 'newUser':
+						console.log('add User');
+					break;
+					case 'userLeft':
+						console.log('remove User');
+					break;
+					case 'newMessage':
+						console.log('new Message');
+					break;
+				}
+			});
 		},
 		defaults: {
 			name: ''

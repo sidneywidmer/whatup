@@ -1,19 +1,20 @@
 /*global define*/
 define([
 	'backbone',
-	'backbonerelational',
-	'autobahn'
-], function (Backbone, ab) {
+	'socketSync',
+	'backbonerelational'
+], function (Backbone, socketSync) {
 	'use strict';
 
 	var UserModel = Backbone.RelationalModel.extend({
 		defaults: {
-			session_id : null,
+			id : null,
 			name: null,
 			currentRoom: null,
 			currentUser: false, //either ture or false
 			connected: false
-		}
+		},
+		sync: socketSync
 	});
 
 	return UserModel;

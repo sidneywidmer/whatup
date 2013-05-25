@@ -32,12 +32,11 @@ require.config({
 		backbone: 'vendor/backbone',
 		backbonerelational: 'vendor/backbone-relational',
 		text: 'vendor/text',
-		autobahn: 'vendor/autobahn.min',
-		when : 'vendor/when',
 		swfobject: 'vendor/web-socket-js/swfobject',
 		websocket: 'vendor/web-socket-js/web_socket',
 		modelbinder:  'vendor/backbone-modelbinder',
-		collectionbinder: 'vendor/backbone-collectionbinder'
+		collectionbinder: 'vendor/backbone-collectionbinder',
+		socketSync: 'socketSync'
 	}
 });
 

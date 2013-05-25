@@ -13,21 +13,21 @@ define([
 			'': 'joinRoom',
 			':roomName': 'joinRoom'
 		},
+		initialize: function()
+		{
+
+		},
 		joinRoom: function(roomName){
 			if(typeof(roomName) == 'undefined') roomName = 'lobby';
-			var room = new RoomModel({name: roomName});
-			//room.fetch()
-			if(true){
-				//Insert some dummy data
-				var user = new UserModel( { session_id: 'woei9384lsSDKd1', currentRoom: room, currentUser: true } );
-				var user = new UserModel( { session_id: 'woei9384lsSDKd2', name: 'Yannick', currentRoom: room } );
-				var user = new UserModel( { session_id: 'woei9384lsSDKd3', name: 'Esthi', currentRoom: room } );
 
-				this.view = new RoomView({model: room}).render();
-				//console.log(room.currentUser().get('name'));
-			}else{
-				this.notFound();
-			}
+			//create the desired room (defaults lobby)
+			var room = new RoomModel({name: roomName});
+
+			//Add our current User object
+			var user = new UserModel( { id: window.connection._session_id, currentRoom: room, currentUser: true, connected: true } );
+
+			//load view
+			this.view = new RoomView({model: room}).render();
 		},
 		notFound: function(){
 			console.log('room not found');
