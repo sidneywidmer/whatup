@@ -36,14 +36,17 @@ require.config({
 		websocket: 'vendor/web-socket-js/web_socket',
 		modelbinder:  'vendor/backbone-modelbinder',
 		collectionbinder: 'vendor/backbone-collectionbinder',
-		socketSync: 'socketSync'
+		socketSync: 'socketSync',
+		autobahn: 'vendor/autobahn'
 	}
 });
 
 require([
 	'backbone',
-	'routers/router'
-], function (Backbone, Router, AppView) {
+	'routers/router',
+	'autobahn'
+], function (Backbone, Router) {
+	console.log(ab);
 	/*jshint nonew:false*/
 	// Initialize routing and start Backbone.history()
 	window.router = new Router();
