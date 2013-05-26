@@ -19,11 +19,10 @@ define([
 		/**
 		 * Helper for the converter to display
 		 * in the frontend. This decides which class
-		 * we should append
+		 * we should append. It gets called outside of the model context
 		 */
-		getCssClassName: function(){
-			console.log(this);
-			return this.get('connected') ? 'nephritis' : 'clouds';
+		getCssClassName: function(direction, value, attribute, model){
+			return model.get('connected') ? 'nephritis' : 'clouds';
 		}
 
 	});

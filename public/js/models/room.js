@@ -49,6 +49,7 @@ define([
 					case 'userLeft':
 						var userLeft = JSON.parse(msg.user);
 						var foundUser = that.get('activeusers').findWhere({'session_id': userLeft.session_id});
+						foundUser.set('connected', false);
 						that.get('activeusers').remove(foundUser);
 					break;
 					case 'newMessage':
