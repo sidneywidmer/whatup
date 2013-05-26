@@ -58,7 +58,7 @@ define([
 			if (!newMessage.trim()) {
 				return;
 			}
-			console.log('newMessage');
+
 			// //we'll triger the change event after we got a successful save from the server
 			var currentUser = this.model.currentUser();
 			var message = new MessageModel({

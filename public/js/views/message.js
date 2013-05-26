@@ -25,7 +25,7 @@ define([
 		render: function(){
 			this.$el.html(this.template());
 
-			var userBindings = {name: {selector: '[data-name=username]'}, connected: {selector: '#connectedStatus',  converter:  this.model.get('user').getCssClassName}}; //elAttribute: 'class',
+			var userBindings = {name: {selector: '[data-name=username]'}, connected: {selector: '#connectedStatus',  elAttribute: 'class', converter:  this.model.get('user').getCssClassName}};
 			this._userModelBinder.bind(this.model.get('user'), this.el, userBindings);
 
 			var messageBindings = {created_at: '[data-name=created_at]', content: '[data-name=content]'};

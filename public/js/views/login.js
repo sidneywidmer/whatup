@@ -33,7 +33,7 @@ define([
 		},
 		setNewName: function(e) {
 			var newName = $('input[type=text]').val();
-			console.log('newName');
+
 			if (!newName.trim()) {
 				return;
 			}
