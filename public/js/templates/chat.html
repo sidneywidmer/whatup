@@ -1,28 +1,11 @@
 <div class="chat row">
 	<div class="messages-wrap span9">
-		<div class="messages">
-<!-- 				{{#each messages}}
-				<div class="message">
-					<div class="ball-big">
-						{{#if user.connected}}
-							<div class="ball bg nephritis"></div>
-						{{else}}
-							<div class="ball bg clouds"></div>
-						{{/if}}
-					</div>
-					<div class="user-message span2">
-						<span class="user-message-username">{{user.name}}: </span>
-						<span class="user-message-timestamp">{{datehelper timestamp}}</span>
-					</div>
-					<div class="content-message span6">
-					 	{{content}}
-					</div>
-				</div>
-			{{/each}} -->
+		<div class="messages" id="messages">
+
 		</div>
 		<div class="new-message">
-			<input type="text" />
-			<a {{action "submitMessage"}} class="btn"><i class="icon-ok"></i></a>
+			<input type="text" id="newMessage"/>
+			<a class="btn" id="newMessageBtn"><i class="icon-ok"></i></a>
 		</div>
 	</div>
 	<div class="users span3">

@@ -64,18 +64,23 @@ class RoomTopic extends BaseTopic {
 		echo "new call for the following action: " . $params['action'] . " | model: " . $params['model'] . "\n";
 
 		switch ($params['action']) {
-			case 'updateUser':
-				$result = $this->updateUser($params['model'], $connection);
+			case 'update':
+				if($params['type'] == 'user')
+				{
+					$result = $this->updateUser($params['model'], $connection, $id, $topic);
+				}
 				break;
-			case 'submitMessage':
-				$result = $this->newMessage($params['value'], $connection, $topic);
+			case 'create':
+				if($params['type'] == 'message')
+				{
+					$result = $this->newMessage($params['model'], $connection, $id, $topic);
+				}
 				break;
 			default:
-				# code...
+				//something went wrong
+				$connection->close();
 				break;
 		}
-
-		$connection->callResult($id, $result);
 	}
 
 	public function unsubscribe($connection, $topic)
@@ -106,18 +111,20 @@ class RoomTopic extends BaseTopic {
 	 *
 	 * @param string $name
 	 */
-	private function updateUser($model, $connection)
+	private function updateUser($model, $connection, $id, $topic)
 	{
 		$user = $connection->WhatUp->user;
 		$user->name = $model['name'];
 
 		if($user->save())
 		{
-			return array('success' => true, 'model' => $user->toJson());
+			//just send back the new model so its in sync with the client version
+			$connection->callResult($id, $user->toArray());
 		}
 		else
 		{
-			return array('success' => false, 'errors' => $user->validationErrors->get('name'));
+			//TODO: this should be more generic... something like ->first()
+			$connection->callError($id, $topic, $user->validationErrors->first('name'));
 		}
 	}
 
@@ -127,12 +134,12 @@ class RoomTopic extends BaseTopic {
 	 *
 	 * @param string $message
 	 */
-	private function newMessage($message, $connection, $topic)
+	private function newMessage($model, $connection, $id, $topic)
 	{
 		$user = $connection->WhatUp->user;
 
 		$newMessage = new Message;
-		$newMessage->content = $message;
+		$newMessage->content = $model['content'];
 		$newMessage->room_id = $user->room_id;
 
 		if($user->messages()->save($newMessage))
@@ -144,12 +151,11 @@ class RoomTopic extends BaseTopic {
 				'message' => $newMessage->toJson()
 			);
 			$this->broadcast($topic, $msg, $exclude = array($user->session_id));
-
-			return array('success' => true, 'message' => $msg);
+			$connection->callResult($id, $newMessage->toArray());
 		}
 		else
 		{
-			return array('success' => false, 'errors' => $newMessage->validationErrors->get('content'));
+			$connection->callError($id, $topic, $user->validationErrors->first('content'));
 		}
 	}
 

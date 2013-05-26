@@ -4,8 +4,9 @@ define([
 	'backbone',
 	'models/room',
 	'models/user',
+	'models/message',
 	'views/room'
-], function ($, Backbone, RoomModel, UserModel, RoomView) {
+], function ($, Backbone, RoomModel, UserModel, MessageModel, RoomView) {
 	'use strict';
 
 	var Router = Backbone.Router.extend({
@@ -24,7 +25,7 @@ define([
 			var room = new RoomModel({name: roomName});
 
 			//Add our current User object
-			var user = new UserModel( { id: window.connection._session_id, currentRoom: room, currentUser: true, connected: true } );
+			var user = new UserModel( { session_id: window.connection._session_id, currentRoom: room, currentUser: true, connected: true } );
 
 			//load view
 			this.view = new RoomView({model: room}).render();

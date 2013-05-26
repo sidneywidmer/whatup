@@ -6,19 +6,18 @@ define([
 	'use strict';
 
 	var socketSync = function(method, model, options){
-		if(method == "update"){
+		if(method == "update" || method == 'create'){
 			window.connection.call(
-				'room/lobby',
-				{'action':'updateUser', 'model':model}
-			).then(function(result){
-				if(result.success){
-					//model.trigger('change');
-					console.log(result);
-				}else{
-					//Show error
-					console.log(result.errors);
+				'room/lobby', //TODO: this should be dynamic!
+				{'action': method, type: options.type, 'model':model}
+			).then(
+				function(success){
+					if(options.success) options.success(success);
+				},
+				function(error){
+					if(options.error) options.error(error);
 				}
-			}, null);
+			);
 		}else{
 			Backbone.sync(method, model, options);
 		}

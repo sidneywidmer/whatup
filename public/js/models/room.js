@@ -3,35 +3,66 @@ define([
 	'underscore',
 	'backbone',
 	'models/user',
-	'collections/users',
+	'models/message',
 	'backbonerelational'
-], function (_, Backbone, UserModel, UsersCollection) {
+], function (_, Backbone, UserModel, MessageModel) {
 	'use strict';
 
 	var RoomModel = Backbone.RelationalModel.extend({
-		relations: [{
-			type: Backbone.HasMany,
-			key: 'activeusers',
-			relatedModel: UserModel,
-			reverseRelation: {
-				key: 'currentRoom',
-				includeInJSON: 'name'
-				// 'relatedModel' is automatically set to 'Zoo'; the 'relationType' to 'HasOne'.
+		relations: [
+			{
+				type: Backbone.HasMany,
+				key: 'activeusers',
+				relatedModel: UserModel,
+				reverseRelation: {
+					key: 'currentRoom',
+					includeInJSON: 'name'
+				}
+			},
+			{
+				type: Backbone.HasMany,
+				key: 'messages',
+				relatedModel: MessageModel,
+				reverseRelation: {
+					key: 'room',
+					includeInJSON: 'name'
+				}
 			}
-		}],
+		],
 		subscribe: function(){
 			var channel = 'room/' + this.get('name');
+			//TODO: Is there a better way? Like binding that to the scobe of subscirbe...
+			var that = this;
 			window.connection.subscribe(channel, function(channel, msg) {
 				switch (msg.action)
 				{
 					case 'newUser':
-						console.log('add User');
+						var newUser = JSON.parse(msg.user);
+						var user = new UserModel({
+							session_id: newUser.session_id,
+							currentRoom: that,
+							currentUser: false,
+							connected: newUser.connected,
+							name: newUser.name,
+						});
 					break;
 					case 'userLeft':
-						console.log('remove User');
+						var userLeft = JSON.parse(msg.user);
+						var foundUser = that.get('activeusers').findWhere({'session_id': userLeft.session_id});
+						that.get('activeusers').remove(foundUser);
 					break;
 					case 'newMessage':
-						console.log('new Message');
+						//TODO: findOrCreate
+						var user = JSON.parse(msg.user);
+						var message = JSON.parse(msg.message);
+						var foundUser = that.get('activeusers').findWhere({'session_id': user.session_id});
+						var newMessage = new MessageModel({
+							id: message.id,
+							created_at: message.created_at,
+							room: that,
+							user: foundUser,
+							content: message.content,
+						});
 					break;
 				}
 			});

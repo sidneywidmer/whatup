@@ -13,6 +13,11 @@ class User extends Ardent {
 	);
 
 	/**
+	 * only expose these values to the frontend
+	 */
+	protected $visible = array('session_id', 'name', 'connected');
+
+	/**
 	 * define relationship to room
 	 */
 	 public function room()

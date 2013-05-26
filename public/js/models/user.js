@@ -7,14 +7,25 @@ define([
 	'use strict';
 
 	var UserModel = Backbone.RelationalModel.extend({
+		idAttribute: "session_id",
 		defaults: {
-			id : null,
+			session_id : null,
 			name: null,
 			currentRoom: null,
 			currentUser: false, //either ture or false
 			connected: false
 		},
-		sync: socketSync
+		sync: socketSync,
+		/**
+		 * Helper for the converter to display
+		 * in the frontend. This decides which class
+		 * we should append
+		 */
+		getCssClassName: function(){
+			console.log(this);
+			return this.get('connected') ? 'nephritis' : 'clouds';
+		}
+
 	});
 
 	return UserModel;

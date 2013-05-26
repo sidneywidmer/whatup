@@ -170,6 +170,11 @@ p {
 	color: #666;
 }
 
+p.error {
+	margin-top: 14px;
+	color: #C0392B;
+}
+
 .bg.nephritis{background:#27AE60;}
 .bg.clouds{background:#bdc3c7;}
 

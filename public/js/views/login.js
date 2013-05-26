@@ -13,12 +13,19 @@ define([
 
 		template: _.template(loginTemplate),
 		events: {
-			'click .btn':  'setNewName',
-			'keypress input[type=text]': 'setNewNameOnEnter'
+			'click #newNameBtn':  'setNewName',
+			'keypress #newName': 'setNewNameOnEnter'
 		},
 		render: function () {
 			this.$el.html(this.template());
 			return this;
+		},
+		initialize: function(){
+			this.listenTo(this.model.currentUser(), 'error', this.inputError);
+		},
+		inputError: function(model, error){
+			//set the error message in the view
+			this.$('.error').html(error.desc);
 		},
 		setNewNameOnEnter: function(e) {
 			if (e.keyCode != 13) return;
@@ -26,15 +33,22 @@ define([
 		},
 		setNewName: function(e) {
 			var newName = $('input[type=text]').val();
-
+			console.log('newName');
 			if (!newName.trim()) {
 				return;
 			}
 
 			//we'll triger the change event after we got a successful save from the server
 			var currentUser = this.model.currentUser();
-			currentUser.save({name: newName}, {method: 'update'});
 
+			currentUser.save(
+				{name: newName},
+				{
+					method: 'update',
+					type: 'user',
+					wait: 'true'
+				}
+			);
 		}
 
 	});
