@@ -133,7 +133,7 @@
  */
 
 (function(define) { 'use strict';
-define(function () {
+
    var reduceArray, slice, undef;
 
    //
@@ -865,17 +865,11 @@ define(function () {
    function identity(x) {
       return x;
    }
+   window.when = when;
 
    return when;
-});
-})(typeof define == 'function' && define.amd
-   ? define
-   : function (factory) { typeof exports === 'object'
-      ? (module.exports = factory())
-      : (this.when      = factory());
-   }
-   // Boilerplate for AMD, Node, and browser global
-);
+
+}());
 
 /*
 CryptoJS v3.1.2
