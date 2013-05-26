@@ -5,7 +5,8 @@ define([
 	'models/room',
 	'models/user',
 	'models/message',
-	'views/room'
+	'views/room',
+	'autobahn'
 ], function ($, Backbone, RoomModel, UserModel, MessageModel, RoomView) {
 	'use strict';
 
@@ -14,9 +15,27 @@ define([
 			'': 'joinRoom',
 			':roomName': 'joinRoom'
 		},
+		/**
+		 * initialize the socket connection
+		 */
 		initialize: function()
 		{
-
+			window.connection = new ab.Session(
+				'ws://lampstack.dev:1111', // The host (our Ratchet WebSocket server) to connect to
+				function() {
+					// Once the connection has been established
+					console.log('Connected');
+					Backbone.history.start();
+				},
+				function() {
+					// When the connection is closed
+					window.router.notFound();
+				},
+				{
+					// Additional parameters, we're ignoring the WAMP sub-protocol for older browsers
+					'skipSubprotocolCheck': true
+				}
+			);
 		},
 		joinRoom: function(roomName){
 			if(typeof(roomName) == 'undefined') roomName = 'lobby';

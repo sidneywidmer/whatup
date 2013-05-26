@@ -7,7 +7,8 @@ define([
 	'views/message',
 	'models/message',
 	'modelbinder',
-	'collectionbinder'
+	'collectionbinder',
+	'scrollbar'
 ], function ($, _, Backbone, chatTemplate, MessageView, MessageModel) {
 	'use strict';
 
@@ -19,12 +20,13 @@ define([
 		//TODO: remove?
 		parentView: null,
 		template: _.template(chatTemplate),
+		scrollable: null,
 		events: {
 			'click #newMessageBtn':  'newMessage',
 			'keypress input#newMessage': 'newMessageOnEnter'
 		},
 		initialize: function() {
-
+			var that = this;
 			// Bind the subscbried users
 			var liHtml = '<li><span data-name="name"></span></li>';
 			var userManagerFactory = new Backbone.CollectionBinder.ElManagerFactory(liHtml, 'data-name');
@@ -33,7 +35,10 @@ define([
 			// Bind the messages
  			var messageManagerFactory = new Backbone.CollectionBinder.ViewManagerFactory(this.messageViewCreator);
             this._messageCollectionBinder = new Backbone.CollectionBinder(messageManagerFactory);
-
+			this._messageCollectionBinder.on('elCreated', function(model, el){
+				$('#messages').mCustomScrollbar("update");
+				$('#messages').mCustomScrollbar("scrollTo","bottom");
+			});
 			//finally subscribe to our room socket
 			this.model.subscribe();
 		},
@@ -43,8 +48,16 @@ define([
 		render: function () {
 			this.$el.html(this.template());
 
+			//initialize custom scrollbar
+			this.scrollable = this.$('#messages');
+			this.scrollable.mCustomScrollbar({
+				autoHideScrollbar:true,
+				theme:"dark-thin"
+			});
+
 			this._userCollectionBinder.bind(this.model.get('activeusers'), this.$('#subscribers'));
-			this._messageCollectionBinder.bind(this.model.get('messages'), this.$('#messages'));
+			//we have to insert directly in the custom scrollbar container
+			this._messageCollectionBinder.bind(this.model.get('messages'), this.$('#messages').find(".mCSB_container"));
 
 			return this;
 		},
@@ -80,6 +93,7 @@ define([
 			this._messageCollectionBinder.unbind();
 			this.off();
 			this.undelegateEvents();
+			this.scrollbar.mCustomScrollbar("destroy");
 			this.remove();
 		}
 

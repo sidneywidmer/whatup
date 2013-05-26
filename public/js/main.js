@@ -24,6 +24,11 @@ require.config({
 				'jquery',
 			],
 			exports: 'Backbone'
+		},
+		scrollbar: {
+			deps: [
+				'jquery'
+			]
 		}
 	},
 	paths: {
@@ -37,21 +42,17 @@ require.config({
 		modelbinder:  'vendor/backbone-modelbinder',
 		collectionbinder: 'vendor/backbone-collectionbinder',
 		socketSync: 'socketSync',
-		autobahn: 'vendor/autobahn'
+		autobahn: 'vendor/autobahn',
+		scrollbar: 'vendor/jquery.mCustomScrollbar'
 	}
 });
 
 require([
 	'backbone',
-	'routers/router',
-	'autobahn'
+	'routers/router'
 ], function (Backbone, Router) {
-	console.log(ab);
-	/*jshint nonew:false*/
-	// Initialize routing and start Backbone.history()
+	// Initialize routing
+	// The history will be started after a successfull socket connection
+	// inside the router itself
 	window.router = new Router();
-	Backbone.history.start();
-
-	// Initialize the application view
-	//new AppView();
 });
