@@ -43,7 +43,8 @@ require.config({
 		collectionbinder: 'vendor/backbone-collectionbinder',
 		socketSync: 'socketSync',
 		autobahn: 'vendor/autobahn',
-		scrollbar: 'vendor/jquery.mCustomScrollbar'
+		scrollbar: 'vendor/jquery.mCustomScrollbar',
+		moment: 'vendor/moment.min'
 	}
 });
 

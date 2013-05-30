@@ -74,18 +74,27 @@ define([
 
 			// //we'll triger the change event after we got a successful save from the server
 			var currentUser = this.model.currentUser();
-			var message = new MessageModel({
-				room: this.model,
-				user: this.model.currentUser(),
-				content: newMessage
-			});
-			message.save(
-				{},
-				{
+			var test = this.model.get('messages').create({
+					//room: this.model,
+					user: this.model.currentUser(),
+					content: newMessage
+				},{
 					type: 'message',
 					wait: 'true'
-				}
-			);
+			});
+
+			// var message = new MessageModel({
+			// 	room: this.model,
+			// 	user: this.model.currentUser(),
+			// 	content: newMessage
+			// });
+			// message.save(
+			// 	{},
+			// 	{
+			// 		type: 'message',
+			// 		wait: 'true'
+			// 	}
+			// );
 		},
 		close: function(){
 			this._modelBinder.unbind();

@@ -2,7 +2,8 @@
 define([
 	'backbone',
 	'socketSync',
-	'backbonerelational'
+	'backbonerelational',
+	'moment'
 ], function (Backbone, socketSync) {
 	'use strict';
 
@@ -14,7 +15,10 @@ define([
 			content: null,
 			created_at: null,
 		},
-		sync: socketSync
+		sync: socketSync,
+		formatTimestamp: function(direction, value, attribute, model){
+			return moment().calendar(model.get(value));
+		}
 	});
 
 	return MessageModel;

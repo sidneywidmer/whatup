@@ -25,10 +25,10 @@ define([
 		render: function(){
 			this.$el.html(this.template());
 
-			var userBindings = {name: {selector: '[data-name=username]'}, connected: {selector: '#connectedStatus',  elAttribute: 'class', converter:  this.model.get('user').getCssClassName}};
+			var userBindings = {name: {selector: '[data-name=username]'}, connected: {selector: '[data-name=connected]',  elAttribute: 'class', converter:  this.model.get('user').getCssClassName}};
 			this._userModelBinder.bind(this.model.get('user'), this.el, userBindings);
 
-			var messageBindings = {created_at: '[data-name=created_at]', content: '[data-name=content]'};
+			var messageBindings = {created_at: {selector: '[data-name=created_at]', converter: this.model.formatTimestamp}, content: '[data-name=content]'};
 			this._messageModelBinder.bind(this.model, this.el, messageBindings);
 
 			//this._modelBinder.bind(this.model, this.el, Backbone.ModelBinder.createDefaultBindings(this.el, 'data-name'));
