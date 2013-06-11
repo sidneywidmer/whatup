@@ -6,10 +6,11 @@ define([
 	'text!templates/chat.html',
 	'views/message',
 	'models/message',
+	'models/user',
 	'modelbinder',
 	'collectionbinder',
 	'scrollbar'
-], function ($, _, Backbone, chatTemplate, MessageView, MessageModel) {
+], function ($, _, Backbone, chatTemplate, MessageView, MessageModel, UserModel) {
 	'use strict';
 
 	/**
@@ -39,8 +40,9 @@ define([
 				$('#messages').mCustomScrollbar("update");
 				$('#messages').mCustomScrollbar("scrollTo","bottom");
 			});
+
 			//finally subscribe to our room socket
-			this.model.subscribe();
+			this.subscribe();
 		},
 		messageViewCreator: function(model){
 			return new MessageView({model: model});
@@ -60,6 +62,46 @@ define([
 			this._messageCollectionBinder.bind(this.model.get('messages'), this.$('#messages').find(".mCSB_container"));
 
 			return this;
+		},
+		subscribe: function(){
+			var channel = 'room/' + this.model.get('name');
+			//TODO: Is there a better way? Like binding that to the scobe of subscirbe...
+			var that = this;
+			window.connection.subscribe(channel, function(channel, msg) {
+				switch (msg.action)
+				{
+					case 'newUser':
+						console.log(msg);
+						var newUser = JSON.parse(msg.user);
+						var user = new UserModel({
+							session_id: newUser.session_id,
+							currentRoom: that.model,
+							currentUser: false,
+							connected: newUser.connected,
+							name: newUser.name,
+						});
+					break;
+					case 'userLeft':
+						var userLeft = JSON.parse(msg.user);
+						var foundUser = that.model.get('activeusers').findWhere({'session_id': userLeft.session_id});
+						foundUser.set('connected', false);
+						that.model.get('activeusers').remove(foundUser);
+					break;
+					case 'newMessage':
+						//TODO: findOrCreate
+						var user = JSON.parse(msg.user);
+						var message = JSON.parse(msg.message);
+						var foundUser = that.model.get('activeusers').findWhere({'session_id': user.session_id});
+						var newMessage = new MessageModel({
+							id: message.id,
+							created_at: message.created_at,
+							room: that.model,
+							user: foundUser,
+							content: message.content,
+						});
+					break;
+				}
+			});
 		},
 		newMessageOnEnter: function(e) {
 			if (e.keyCode != 13) return;
@@ -82,19 +124,6 @@ define([
 					type: 'message',
 					wait: 'true'
 			});
-
-			// var message = new MessageModel({
-			// 	room: this.model,
-			// 	user: this.model.currentUser(),
-			// 	content: newMessage
-			// });
-			// message.save(
-			// 	{},
-			// 	{
-			// 		type: 'message',
-			// 		wait: 'true'
-			// 	}
-			// );
 		},
 		close: function(){
 			this._modelBinder.unbind();
@@ -102,7 +131,7 @@ define([
 			this._messageCollectionBinder.unbind();
 			this.off();
 			this.undelegateEvents();
-			this.scrollbar.mCustomScrollbar("destroy");
+			this.scrollable.mCustomScrollbar("destroy");
 			this.remove();
 		}
 

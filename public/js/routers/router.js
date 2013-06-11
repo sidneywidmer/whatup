@@ -13,6 +13,7 @@ define([
 	var Router = Backbone.Router.extend({
 		routes: {
 			'': 'joinRoom',
+			'create' : 'createRoom',
 			':roomName': 'joinRoom'
 		},
 		/**
@@ -48,6 +49,9 @@ define([
 
 			//load view
 			this.view = new RoomView({model: room}).render();
+		},
+		createRoom: function(){
+			console.log("woot")
 		},
 		notFound: function(){
 			console.log('room not found');
