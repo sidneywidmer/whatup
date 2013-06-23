@@ -75,6 +75,9 @@ class RoomTopic extends BaseTopic {
 				{
 					$result = $this->newMessage($params['model'], $connection, $id, $topic);
 				}
+				elseif ($params['type'] == 'room') {
+					$result = $this->newRoom($params['model'], $connection, $id, $topic);
+				}
 				break;
 			default:
 				//something went wrong
@@ -109,7 +112,10 @@ class RoomTopic extends BaseTopic {
 	/**
 	 * update the current user
 	 *
-	 * @param string $name
+	 * @param array $model
+	 * @param object $connection
+	 * @param string $id
+	 * @param object $topic
 	 */
 	private function updateUser($model, $connection, $id, $topic)
 	{
@@ -132,7 +138,10 @@ class RoomTopic extends BaseTopic {
 	 * new message got submitted, save it the db
 	 * and broadcast it
 	 *
-	 * @param string $message
+	 * @param array $model
+	 * @param object $connection
+	 * @param string $id
+	 * @param object $topic
 	 */
 	private function newMessage($model, $connection, $id, $topic)
 	{
@@ -156,6 +165,31 @@ class RoomTopic extends BaseTopic {
 		else
 		{
 			$connection->callError($id, $topic, $user->validationErrors->first('content'));
+		}
+	}
+
+	/**
+	 * create a new room
+	 *
+	 * @param array $model
+	 * @param object $connection
+	 * @param string $id
+	 * @param object $topic
+	 */
+	private function newRoom($model, $connection, $id, $topic)
+	{
+		$user = $connection->WhatUp->user;
+
+		$newRoom = new Room;
+		$newRoom->name = Str::random(10);
+
+		if($newRoom->save())
+		{
+			$connection->callResult($id, $newRoom->toArray());
+		}
+		else
+		{
+			$connection->callError($id, $topic, $newRoom->validationErrors->first('name'));
 		}
 	}
 

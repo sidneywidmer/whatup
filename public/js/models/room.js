@@ -4,8 +4,9 @@ define([
 	'backbone',
 	'models/user',
 	'models/message',
+	'socketSync',
 	'backbonerelational'
-], function (_, Backbone, UserModel, MessageModel) {
+], function (_, Backbone, UserModel, MessageModel, socketSync) {
 	'use strict';
 
 	var RoomModel = Backbone.RelationalModel.extend({
@@ -29,9 +30,7 @@ define([
 				}
 			}
 		],
-		defaults: {
-			name: ''
-		},
+		sync: socketSync,
 		currentUser: function()
 		{
 			return this.get('activeusers').findWhere({currentUser: true});

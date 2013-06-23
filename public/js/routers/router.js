@@ -42,16 +42,38 @@ define([
 			if(typeof(roomName) == 'undefined') roomName = 'lobby';
 
 			//create the desired room (defaults lobby)
-			var room = new RoomModel({name: roomName});
+			if(typeof(this.activeRoom) == 'undefined'){
+				this.activeRoom = new RoomModel({name: roomName});
 
-			//Add our current User object
-			var user = new UserModel( { session_id: window.connection._session_id, currentRoom: room, currentUser: true, connected: true } );
+				//Add our current User object
+				var user = new UserModel( { session_id: window.connection._session_id, currentRoom: this.activeRoom, currentUser: true, connected: true } );
+			}else{
+				var currentUser = this.activeRoom.currentUser();
+
+				//switch to new room
+				this.activeRoom = new RoomModel({name: roomName});
+				currentUser.set('currentRoom', this.activeRoom);
+			}
+
 
 			//load view
-			this.view = new RoomView({model: room}).render();
+			this.roomView = new RoomView({model: this.activeRoom}).render();
 		},
 		createRoom: function(){
-			console.log("woot")
+			console.log("woot");
+			var newRoom = new RoomModel();
+			var r = newRoom.save(
+				{},
+				{
+					type: 'room',
+					wait: 'true',
+					success: this.roomCreated
+				}
+			);
+		},
+		roomCreated: function(room){
+			//redirect to the newly created room
+			Backbone.history.navigate('#/' + room.get('name'));
 		},
 		notFound: function(){
 			console.log('room not found');
