@@ -16,7 +16,6 @@ define([
 	var MessageView = Backbone.View.extend({
 		template: _.template(messageTemplate),
 		tagName: 'div',
-		_modelBinder: undefined,
 		initialize: function(){
 			_.bindAll(this);
 			this._userModelBinder = new Backbone.ModelBinder();
@@ -35,8 +34,8 @@ define([
 			return this;
 		},
 		close: function(){
-			// An example of what your view should probably be doing when it's closed, otherwise you'll end up w/ zombies
-			this._modelBinder.unbind();
+			this._userModelBinder.unbind();
+			this._messageModelBinder.unbind();
 			this.off();
 			this.undelegateEvents();
 			this.remove();

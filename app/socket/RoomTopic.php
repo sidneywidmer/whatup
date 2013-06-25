@@ -86,7 +86,7 @@ class RoomTopic extends BaseTopic {
 		}
 	}
 
-	public function unsubscribe($connection, $topic)
+	public function unsubscribe($connection, $topic, $room_name = null)
 	{
 		//boradcast to all subscribers that the usr left
 		$user = $connection->WhatUp->user;
@@ -106,7 +106,7 @@ class RoomTopic extends BaseTopic {
 		$user->room_id = 0;
 		$user->save();
 
-		echo "unsubscribed. User: " . $connection->WhatUp->user->name . "\n";
+		echo "User unsubscribed. Room: " . $room_name . " | User: " . $user->session_id . "\n";
 	}
 
 	/**
@@ -181,7 +181,7 @@ class RoomTopic extends BaseTopic {
 		$user = $connection->WhatUp->user;
 
 		$newRoom = new Room;
-		$newRoom->name = Str::random(10);
+		$newRoom->name = strtolower(Str::random(10));
 
 		if($newRoom->save())
 		{

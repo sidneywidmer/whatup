@@ -50,17 +50,18 @@ define([
 			}else{
 				var currentUser = this.activeRoom.currentUser();
 
+				//close and unsubscribe from current room
+				this.roomView.close();
+
 				//switch to new room
 				this.activeRoom = new RoomModel({name: roomName});
 				currentUser.set('currentRoom', this.activeRoom);
 			}
 
-
 			//load view
-			this.roomView = new RoomView({model: this.activeRoom}).render();
+			this.roomView = new RoomView({model: this.activeRoom});
 		},
 		createRoom: function(){
-			console.log("woot");
 			var newRoom = new RoomModel();
 			var r = newRoom.save(
 				{},

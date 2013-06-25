@@ -9,7 +9,7 @@
 		<link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 	</head>
 	<body>
-
+		<div id="whatup"></div>
 		<script data-main="js/main" src="js/vendor/require.js"></script>
 	</body>
 </html>

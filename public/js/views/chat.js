@@ -34,12 +34,8 @@ define([
 			this._userCollectionBinder = new Backbone.CollectionBinder(userManagerFactory);
 
 			// Bind the messages
- 			var messageManagerFactory = new Backbone.CollectionBinder.ViewManagerFactory(this.messageViewCreator);
-            this._messageCollectionBinder = new Backbone.CollectionBinder(messageManagerFactory);
-			this._messageCollectionBinder.on('elCreated', function(model, el){
-				$('#messages').mCustomScrollbar("update");
-				$('#messages').mCustomScrollbar("scrollTo","bottom");
-			});
+			var messageManagerFactory = new Backbone.CollectionBinder.ViewManagerFactory(this.messageViewCreator);
+			this._messageCollectionBinder = new Backbone.CollectionBinder(messageManagerFactory);
 
 			//finally subscribe to our room socket
 			this.subscribe();
@@ -49,6 +45,11 @@ define([
 		},
 		render: function () {
 			this.$el.html(this.template());
+
+			this._messageCollectionBinder.on('elCreated', function(model, el){
+				$('#messages').mCustomScrollbar("update");
+				$('#messages').mCustomScrollbar("scrollTo","bottom");
+			});
 
 			//initialize custom scrollbar
 			this.scrollable = this.$('#messages');
@@ -65,13 +66,13 @@ define([
 		},
 		subscribe: function(){
 			var channel = 'room/' + this.model.get('name');
-			//TODO: Is there a better way? Like binding that to the scobe of subscirbe...
+			//TODO: Is there a better way? Like binding that to the scope of subscirbe...
+			//TODO: split switch statement in different functions
 			var that = this;
 			window.connection.subscribe(channel, function(channel, msg) {
 				switch (msg.action)
 				{
 					case 'newUser':
-						console.log(msg);
 						var newUser = JSON.parse(msg.user);
 						var user = new UserModel({
 							session_id: newUser.session_id,
@@ -103,6 +104,10 @@ define([
 				}
 			});
 		},
+		unsubscribe: function(){
+			var channel = 'room/' + this.model.get('name');
+			window.connection.unsubscribe(channel);
+		},
 		newMessageOnEnter: function(e) {
 			if (e.keyCode != 13) return;
 			this.newMessage(e);
@@ -126,7 +131,7 @@ define([
 			});
 		},
 		close: function(){
-			this._modelBinder.unbind();
+			this.unsubscribe();
 			this._userCollectionBinder.unbind();
 			this._messageCollectionBinder.unbind();
 			this.off();

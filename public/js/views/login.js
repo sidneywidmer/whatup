@@ -49,6 +49,12 @@ define([
 					wait: 'true'
 				}
 			);
+		},
+		close: function(){
+			this.off();
+			this.undelegateEvents();
+			this.remove();
+			console.log('login view removed');
 		}
 
 	});
