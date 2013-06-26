@@ -74,7 +74,8 @@ define([
 				{
 					case 'newUser':
 						var newUser = JSON.parse(msg.user);
-						var user = new UserModel({
+
+						var user = UserModel.findOrCreate({
 							session_id: newUser.session_id,
 							currentRoom: that.model,
 							currentUser: false,
