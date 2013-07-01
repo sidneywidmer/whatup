@@ -21,6 +21,7 @@ define([
 		 */
 		initialize: function()
 		{
+			var that = this;
 			window.connection = new ab.Session(
 				'ws://lampstack.dev:1111', // The host (our Ratchet WebSocket server) to connect to
 				function() {
@@ -30,7 +31,7 @@ define([
 				},
 				function() {
 					// When the connection is closed
-					window.router.notFound();
+					that.notFound();
 				},
 				{
 					// Additional parameters, we're ignoring the WAMP sub-protocol for older browsers

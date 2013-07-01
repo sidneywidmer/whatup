@@ -10,6 +10,13 @@
 	</head>
 	<body>
 		<div id="whatup"></div>
+		<script type="text/javascript" src="js/vendor/web-socket-js/swfobject.js"></script>
+		<script type="text/javascript" src="js/vendor/web-socket-js/web_socket.js"></script>
+
+		<script type="text/javascript">
+			//Flash socket location
+			WEB_SOCKET_SWF_LOCATION = "js/vendor/web-socket-js/WebSocketMain.swf";
+		</script>
 		<script data-main="js/main" src="js/vendor/require.js"></script>
 	</body>
 </html>
