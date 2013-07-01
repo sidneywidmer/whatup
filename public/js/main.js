@@ -37,6 +37,7 @@ require.config({
 		backbone: 'vendor/backbone',
 		backbonerelational: 'vendor/backbone-relational',
 		text: 'vendor/text',
+		//TODO: How to use web-socket-js with require.js?
 		// swfobject: 'vendor/web-socket-js/swfobject',
 		// websocket: 'vendor/web-socket-js/web_socket',
 		modelbinder:  'vendor/backbone-modelbinder',

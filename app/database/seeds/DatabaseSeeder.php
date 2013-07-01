@@ -9,9 +9,11 @@ class DatabaseSeeder extends Seeder {
 	 */
 	public function run()
 	{
+		//ungoard to allow massassignment
 		Eloquent::unguard();
 
-		// $this->call('UserTableSeeder');
+		$this->call('DefaultRoomsSeeder');
+        $this->command->info('Default rooms were added to DB');
 	}
 
 }
