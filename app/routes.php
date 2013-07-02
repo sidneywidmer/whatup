@@ -13,8 +13,6 @@
 
 Route::get('/', function()
 {
-	// $app = app();
-	// dd($app['request']->getHost());
 	return View::make('hello');
 });
 

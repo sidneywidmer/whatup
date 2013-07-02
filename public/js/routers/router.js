@@ -22,8 +22,15 @@ define([
 		initialize: function()
 		{
 			var that = this;
+
+			//check if loadFlashPlicyFile function exits (if yes, the flashpolifyll is used)
+			if(typeof WebSocket.loadFlashPolicyFile === 'function')
+			{
+				WebSocket.loadFlashPolicyFile("xmlsocket://lampstack.dev:61011");
+			}
+
 			window.connection = new ab.Session(
-				'ws://lampstack.dev:1111', // The host (our Ratchet WebSocket server) to connect to
+				'ws://lampstack.dev:61010', // The host (our Ratchet WebSocket server) to connect to
 				function() {
 					// Once the connection has been established
 					console.log('Connected');
