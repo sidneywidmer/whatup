@@ -28,8 +28,7 @@ $app->redirectIfTrailingSlash();
 
 $env = $app->detectEnvironment(array(
 
-	'local' => array('lampstack.dev'),
-	'production' => array('whatup.im'),
+	'dev' => array('lampstack.dev'),
 
 ));
 

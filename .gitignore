@@ -4,4 +4,4 @@ composer.phar
 composer.lock
 .DS_Store
 app/config/production
-app/config/local
+app/config/dev
