@@ -8,7 +8,7 @@ define([
 	var socketSync = function(method, model, options){
 		if(method == "update" || method == 'create'){
 			window.connection.call(
-				'room/' + window.router.activeRoom.get('name'), //TODO: this should be dynamic!
+				'room/' + window.router.activeRoom.get('name'),
 				{'action': method, type: options.type, 'model':model}
 			).then(
 				function(success){

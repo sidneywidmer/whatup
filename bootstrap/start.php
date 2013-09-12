@@ -28,7 +28,7 @@ $app->redirectIfTrailingSlash();
 
 $env = $app->detectEnvironment(array(
 
-	'dev' => array('lampstack.dev'),
+	'dev' => array('localhost'),
 
 ));
 

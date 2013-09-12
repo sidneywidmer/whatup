@@ -50,6 +50,12 @@ define([
 				$('#messages').mCustomScrollbar("update");
 				$('#messages').mCustomScrollbar("scrollTo","bottom");
 			});
+			var height = $(window).height() - 374;
+			if(height > 200){
+				$('.messages').height(height);
+			}else{
+				$('.messages').height(200);
+			}
 
 			//initialize custom scrollbar
 			this.scrollable = this.$('#messages');
@@ -58,11 +64,13 @@ define([
 				theme:"dark-thin"
 			});
 
-			this._userCollectionBinder.bind(this.model.get('activeusers'), this.$('#subscribers'));
+			this._userCollectionBinder.bind(this.model.get('users'), this.$('#subscribers'));
 			//we have to insert directly in the custom scrollbar container
 			this._messageCollectionBinder.bind(this.model.get('messages'), this.$('#messages').find(".mCSB_container"));
 
 			return this;
+		},
+		afterRender: function(){
 		},
 		subscribe: function(){
 			var channel = 'room/' + this.model.get('name');
@@ -74,26 +82,30 @@ define([
 				{
 					case 'newUser':
 						var newUser = JSON.parse(msg.user);
-
-						var user = UserModel.findOrCreate({
-							session_id: newUser.session_id,
-							currentRoom: that.model,
-							currentUser: false,
-							connected: newUser.connected,
-							name: newUser.name,
-						});
+						var foundUser = that.model.get('users').findWhere({'session_id': newUser.session_id});
+						if(foundUser){
+							foundUser.set('connected', true);
+						}else{
+							var user = UserModel.findOrCreate({
+								session_id: newUser.session_id,
+								currentRoom: that.model,
+								currentUser: false,
+								connected: newUser.connected,
+								name: newUser.name,
+							});
+						}
 					break;
 					case 'userLeft':
 						var userLeft = JSON.parse(msg.user);
-						var foundUser = that.model.get('activeusers').findWhere({'session_id': userLeft.session_id});
+						var foundUser = that.model.get('users').findWhere({'session_id': userLeft.session_id});
 						foundUser.set('connected', false);
-						that.model.get('activeusers').remove(foundUser);
+						that.model.get('users').remove(foundUser);
 					break;
 					case 'newMessage':
 						//TODO: findOrCreate
 						var user = JSON.parse(msg.user);
 						var message = JSON.parse(msg.message);
-						var foundUser = that.model.get('activeusers').findWhere({'session_id': user.session_id});
+						var foundUser = that.model.get('users').findWhere({'session_id': user.session_id});
 						var newMessage = new MessageModel({
 							id: message.id,
 							created_at: message.created_at,
@@ -130,6 +142,7 @@ define([
 					type: 'message',
 					wait: 'true'
 			});
+			$('input[type=text]').val('');
 		},
 		close: function(){
 			this.unsubscribe();

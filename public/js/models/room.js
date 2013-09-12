@@ -13,7 +13,7 @@ define([
 		relations: [
 			{
 				type: Backbone.HasMany,
-				key: 'activeusers',
+				key: 'users',
 				relatedModel: UserModel,
 				reverseRelation: {
 					key: 'currentRoom',
@@ -31,13 +31,14 @@ define([
 			}
 		],
 		sync: socketSync,
-		currentUser: function()
-		{
-			return this.get('activeusers').findWhere({currentUser: true});
+		currentUser: function(){
+			return this.get('users').findWhere({currentUser: true});
 		},
-		allExceptMe: function()
-		{
-			return this.get('activeusers').where({currentUser: false});
+		connectedUsers: function(){
+			return new Backbone.Collection(this.get('users').where({connected: 1}));
+		},
+		allExceptMe: function(){
+			return this.get('users').where({currentUser: false});
 		}
 	});
 

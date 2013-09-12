@@ -10,26 +10,13 @@ require.config({
 		underscore: {
 			exports: '_'
 		},
-		backbonerelational : {
-			deps: [
-				'backbone'
-			]
-		},
-		collectionbinder: {
-			deps: ['backbone']
-		},
+		backbonerelational : ['backbone'],
+		collectionbinder: ['backbone'],
 		backbone: {
-			deps: [
-				'underscore',
-				'jquery',
-			],
+		 	deps:['underscore','jquery'],
 			exports: 'Backbone'
 		},
-		scrollbar: {
-			deps: [
-				'jquery'
-			]
-		}
+		scrollbar: ['jquery']
 	},
 	paths: {
 		jquery: 'vendor/jquery-1.9.1',

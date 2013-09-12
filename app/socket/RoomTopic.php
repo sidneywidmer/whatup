@@ -43,13 +43,10 @@ class RoomTopic extends BaseTopic {
 					$this->broadcast($topic, $msg, $exclude = array(), $eligible = array($user->session_id));
 				}
 			}
-
-			echo "new subscription. Room: " . $room_name . " | User: " . $user->session_id . "\n";
 		}
 		else
 		{
 			//room does not exist
-			echo"Room does not exist, dafuq? \n";
 			$connection->close();
 		}
 	}
@@ -61,8 +58,6 @@ class RoomTopic extends BaseTopic {
 
 	public function call($connection, $id, $topic, array $params)
 	{
-		echo "new call for the following action: " . $params['action'] . " | model: " . $params['model'] . "\n";
-
 		switch ($params['action']) {
 			case 'update':
 				if($params['type'] == 'user')
@@ -105,8 +100,6 @@ class RoomTopic extends BaseTopic {
 		//save to database
 		$user->room_id = 0;
 		$user->save();
-
-		echo "User unsubscribed. Room: " . $room_name . " | User: " . $user->session_id . "\n";
 	}
 
 	/**

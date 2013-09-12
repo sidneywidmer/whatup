@@ -3,18 +3,22 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+	'models/room',
 	'views/login',
 	'views/chat',
 	'text!templates/room.html',
 	'modelbinder',
-	'collectionbinder'
-], function ($, _, Backbone, LoginView, ChatView, roomTemplate) {
+	'collectionbinder',
+], function ($, _, Backbone, RoomModel, LoginView, ChatView, roomTemplate) {
 	'use strict';
 
 	var RoomView = Backbone.View.extend({
 
 		el: $('#whatup'),
 		template: _.template(roomTemplate),
+		events: {
+			"click #createRoom" : "createRoom"
+		},
 		initialize: function () {
 			this.listenTo(this.model.currentUser(), 'change:name', this.nameChanged);
 			this.render();
@@ -43,6 +47,22 @@ define([
 		nameChanged: function(){
 			//since we have a name now, show us the actual chat in its full glory!
 			this.renderChat();
+		},
+		createRoom: function(e){
+			e.preventDefault();
+			var newRoom = new RoomModel();
+			var r = newRoom.save(
+				{},
+				{
+					type: 'room',
+					wait: 'true',
+					success: this.roomCreated
+				}
+			);
+		},
+		roomCreated: function(room){
+			//redirect to the newly created room
+			Backbone.history.navigate('#/' + room.get('name'));
 		},
 		close: function(){
 			this.subview.close();

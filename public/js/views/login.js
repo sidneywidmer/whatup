@@ -54,7 +54,6 @@ define([
 			this.off();
 			this.undelegateEvents();
 			this.remove();
-			console.log('login view removed');
 		}
 
 	});

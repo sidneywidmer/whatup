@@ -6,6 +6,11 @@ class Connection extends BaseConnection {
 
 	public function open($connection)
 	{
+		//in case of a mysql timeout, reconnect
+		//to the database
+		$app = app();
+		$app['db']->reconnect();
+
 		$user = new User;
 		$user->session_id = $connection->WAMP->sessionId;
 		$user->connected = 1;

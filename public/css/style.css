@@ -9,13 +9,13 @@ body {
 	position: relative;
 	background: #f1f1f1;
 	width: 100%;
-	height: 200px;
+	height: 230px;
 	float: left;
 	text-align: center;
 }
 
 .intro-text {
-	margin-top: 70px;
+	margin-top: 50px;
 }
 
 .container {
@@ -38,7 +38,7 @@ body {
 }
 
 .messages {
-	height: 300px;
+	max-height: 100%;
 	overflow-y: auto;
 }
 
@@ -70,6 +70,7 @@ body {
 	position: relative;
 	background: url(../img/line.png) repeat-y 10px top;
 	padding: 0px 0 10px 16px;
+	width: 100%;
 }
 
 .user-message {
@@ -87,7 +88,7 @@ body {
 }
 
 .content-message {
-	float: right;
+	float: left;
 }
 
 .ball {
@@ -110,12 +111,20 @@ body {
 }
 
 .new-message {
-	margin-left: 37px;
+	width: 100%;
+	margin: 20px 0 10px 0px;
+}
+
+.new-message .btn {
+	float: left;
+	text-align: center;
 }
 
 
 .chat input[type="text"] {
-	width: 200px;
+	float: left;
+	font-size: 14px;
+	margin-bottom: 10px;
 }
 
 
@@ -131,17 +140,21 @@ input[type="text"] {
 }
 
 .btn {
-  display: inline-block;
-  padding: 10px 12px;
-  margin-bottom: 0;
-  font-size: 14px;
-  line-height: 20px;
-  color: #fff;
-  text-align: left;
-  vertical-align: middle;
-  cursor: pointer;
-  background-color: #27AE60;
-  border: 0px;
+	display: inline-block;
+	margin-bottom: 0;
+	font-size: 14px;
+	line-height: 20px;
+	color: #fff;
+	text-align: left;
+	vertical-align: middle;
+	cursor: pointer;
+	background-color: #27AE60;
+	border: 0px;
+	padding-bottom: 3px;
+	border-radius: 2px;
+	-webkit-box-shadow: inset 0 -2px rgba(255,255,255,0.1),inset 0 -3px rgba(0,0,0,0.1),0 1px rgba(0,0,0,0.05);
+	box-shadow: inset 0 -2px rgba(255,255,255,0.1),inset 0 -3px rgba(0,0,0,0.1),0 1px rgba(0,0,0,0.05);
+	padding: 10px 19px;
 }
 
 .btn:hover{
@@ -157,6 +170,12 @@ h1 {
 	font-family: 'Montserrat', sans-serif;
 	/*text-transform: uppercase;*/
 	font-weight: 400;
+	margin-bottom: 40px;
+}
+
+h1 .icon-chevron-right {
+	position: absolute;
+	top: 64px;
 }
 
 h1 span {
@@ -203,6 +222,40 @@ p.error {
 .color.silver{color:#BDC3C7;}
 .color.concrete{color:#95A5A6;}
 .color.asbestos{color:#7F8C8D;}
+
+/**
+ * SOME RESPONSIVE SHIT
+ */
+/* Large desktop */
+@media (min-width: 1200px) {
+
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+
+}
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+	.user-message.span2 {
+		margin-left: 20px;
+	}
+	.content-message.span6 {
+		margin: 5px 0px 0px 20px;
+	}
+	.chat.row {
+		width: 100%;
+	}
+	.user-message-username {
+		display: inline;
+	}
+}
+
+/* Landscape phones and down */
+@media (max-width: 480px) {
+
+}
 
 /**
  * SCROLLBAR

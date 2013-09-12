@@ -22,7 +22,7 @@ define([
 		 * we should append. It gets called outside of the model context
 		 */
 		getCssClassName: function(direction, value, attribute, model){
-			return model.get('connected') ? 'nephritis' : 'clouds';
+			return value ? 'nephritis' : 'clouds';
 		}
 
 	});
