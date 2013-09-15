@@ -9,7 +9,7 @@ class User extends Ardent {
 	public static $rules = array(
 		'session_id' => 'required|alpha_num',
 		'name' => 'alpha_dash|max:20|min:2',
-		'connected' => 'required|in:0,1'
+		'connected' => 'required|in:0,1',
 	);
 
 	/**
@@ -31,6 +31,14 @@ class User extends Ardent {
 	 public function messages()
 	 {
 	 	return $this->hasMany('message');
+	 }
+
+	 public function isUnique($newName, $roomName = null)
+	 {
+	 	$room = Room::where('name', '=', $roomName)->first();
+	 	$count = User::where('room_id', '=', $room->id)->where('connected', '=', 1)->where('name', '=', $newName)->count();
+	 	$this->validationErrors->add('name', 'This name has already been taken :(');
+	 	return $count === 0 ? true : false;
 	 }
 
 }

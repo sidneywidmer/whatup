@@ -115,7 +115,7 @@ class RoomTopic extends BaseTopic {
 		$user = $connection->WhatUp->user;
 		$user->name = $model['name'];
 
-		if($user->save())
+		if($user->save() AND $user->isUnique($model['name'], $model['currentRoom']))
 		{
 			//just send back the new model so its in sync with the client version
 			$connection->callResult($id, $user->toArray());
@@ -123,7 +123,7 @@ class RoomTopic extends BaseTopic {
 		else
 		{
 			//TODO: this should be more generic... something like ->first()
-			$connection->callError($id, $topic, $user->validationErrors->first('name'));
+			$connection->callError($id, $topic, $user->validationErrors->first());
 		}
 	}
 

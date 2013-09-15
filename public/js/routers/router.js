@@ -25,11 +25,12 @@ define([
 			//check if loadFlashPlicyFile function exits (if yes, the flashpolifyll is used)
 			if(typeof WebSocket.loadFlashPolicyFile === 'function')
 			{
-				WebSocket.loadFlashPolicyFile("xmlsocket://localhost/:61102");
+				console.log('foo');
+				WebSocket.loadFlashPolicyFile("xmlsocket://192.168.0.20:61102");
 			}
 
 			window.connection = new ab.Session(
-				'ws://192.168.0.20:61102', // The host (our Ratchet WebSocket server) to connect to
+				'ws://192.168.0.20:61101', // The host (our Ratchet WebSocket server) to connect to
 				function() {
 					// Once the connection has been established
 					console.log('Connected');

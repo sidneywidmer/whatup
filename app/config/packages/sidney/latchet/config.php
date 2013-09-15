@@ -13,7 +13,7 @@ return array(
 	|
 	*/
 
-	'socketPort' => 61102,
+	'socketPort' => 61101,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -75,6 +75,6 @@ return array(
 	| WebSocket.loadFlashPolicyFile("xmlsocket://myhost.com:61011");
 	*/
 
-	'flashPort' => 61101,
+	'flashPort' => 61102,
 
 );
