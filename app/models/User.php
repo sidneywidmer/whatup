@@ -33,7 +33,14 @@ class User extends Ardent {
 	 	return $this->hasMany('message');
 	 }
 
-	 public function isUnique($newName, $roomName = null)
+	 /**
+	  * make shure the username is valid for this room
+	  *
+	  * @param $newName string
+	  * @param $roomName string
+	  * @return bool
+	  */
+	 public function isUnique($newName, $roomName)
 	 {
 	 	$room = Room::where('name', '=', $roomName)->first();
 	 	$count = User::where('room_id', '=', $room->id)->where('connected', '=', 1)->where('name', '=', $newName)->count();
